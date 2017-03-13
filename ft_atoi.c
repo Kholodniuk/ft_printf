@@ -6,11 +6,11 @@
 /*   By: skholodn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 15:28:05 by skholodn          #+#    #+#             */
-/*   Updated: 2016/12/06 17:08:58 by skholodn         ###   ########.fr       */
+/*   Updated: 2017/03/13 16:14:31 by skholodn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "ft_printf.h"
 
 int		ft_atoi(const char *s)
 {
