@@ -91,7 +91,7 @@ t_s *wstr_init(wchar_t *wstr, t_e *e)
     s = malloc(sizeof(t_s));
     s->size_space = 0;
     s->size_str = wchar_len(wstr);
-    if (e->precision < s->size_str)
+    if (e->precision < s->size_str && e->precision != -1)
         s->size_str = e->precision;
     s->str = ft_strnew((size_t)s->size_str);
     s->str = wstrncpy(s->str, wstr, s->size_str);
@@ -99,7 +99,7 @@ t_s *wstr_init(wchar_t *wstr, t_e *e)
         s->size_space = (e->width - s->size_str);
     sz_space = s->size_space;
     s->space = ft_strnew((size_t)sz_space);
-    while (--sz_space)
+    while (--sz_space > -1)
     {
         if (e->f->minus || !e->f->zero)
             s->space[sz_space] = ' ';
