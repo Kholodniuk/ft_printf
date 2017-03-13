@@ -68,7 +68,7 @@ void    select_oxp(t_e *e, va_list ar)
 
 void    make_fprintf(t_e *e, va_list ar)
 {
-    if (e->spec == 's' && e->mod != 4)
+    if (e->spec == 's' && e->mod != 3)
         get_str(va_arg(ar, char *), e);
     else if (e->spec == 'c' || e->spec == 'C')
         get_char(va_arg(ar, int), e);
