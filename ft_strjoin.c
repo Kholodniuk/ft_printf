@@ -6,11 +6,11 @@
 /*   By: skholodn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/01 20:50:21 by skholodn          #+#    #+#             */
-/*   Updated: 2016/12/01 21:37:23 by skholodn         ###   ########.fr       */
+/*   Updated: 2017/03/13 16:13:01 by skholodn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../get_next_line/libft/libft.h"
+#include "ft_printf.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
