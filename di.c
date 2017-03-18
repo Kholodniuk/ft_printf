@@ -65,7 +65,7 @@ t_di    *init_di(intmax_t nb, t_e *e)
     {
         di->size_zero = e->precision - di->size_nbr;
     }
-    else if (e->precision <= di->size_nbr && e->f->zero && !e->f->minus)
+    else if (e->precision <= di->size_nbr && e->f->zero && !e->f->minus && e->precision != -1)
         di->size_zero = e->width - di->size_nbr - di->size_sign;
     di->size_space = (e->width - (e->precision > di->size_nbr ? e->precision : (di->size_nbr + di->size_zero)) - di->size_sign);
     init_char_di(di, nb, e);
