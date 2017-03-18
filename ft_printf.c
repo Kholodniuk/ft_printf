@@ -46,7 +46,7 @@ void    str_cpy(t_e *e, char **fmt)
 {
     int     len;
 
-    if (*(ft_strchr(*fmt, '%')) == '%')
+    if (ft_strchr(*fmt, '%') != NULL && *(ft_strchr(*fmt, '%')) == '%')
     {
         // if (ft_strchr(*fmt, '{') != NULL)
         // {
@@ -61,7 +61,7 @@ void    str_cpy(t_e *e, char **fmt)
             (*fmt) += len;
         // }
     }
-    else if (*(ft_strchr(*fmt, '{')) == '{')
+    else if (ft_strchr(*fmt, '{') != NULL && *(ft_strchr(*fmt, '{')) == '{')
         {
             len = (int)(ft_strchr(*fmt, '{') - *fmt);
             e->bits_count += write(1, ft_strsub(*fmt, 0, (size_t)len), (size_t)len);
