@@ -65,8 +65,8 @@ int  find_mod(t_e *e, char **fmt)
         e->mod = 5;
     else if (**fmt == 'j' && e->mod <= 6)
         e->mod = 6;
-    // else if (**fmt == 'L' && e->mod <= 7)
-    //     e->mod = 7;
+    else if (**fmt == 'L' && e->mod <= 7)
+        e->mod = 7;
     if (find_mod_mv_two(fmt))
         return (1);
     else if (find_mod_mv(fmt))

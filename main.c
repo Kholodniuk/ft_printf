@@ -39,6 +39,7 @@ int	main(void)
 
     n = 0;
     l = 0;
+    ft_printf("%012i\n",2147483647);
     //setlocale(LC_CTYPE, "");
 //    printf("is a string%n", &n);
 //    printf(" len: %d| ", n);
@@ -46,8 +47,8 @@ int	main(void)
 //    int     fd;
 //    fd = open("/nfs/2016/s/skholodn/firstCircle/ft_printf_YODA_edition/file", O_RDWR);
 //    ft_printf("%S", L"Б");
-    printf("| len %d\n", printf("{%f}{%F}", 1.42, 1.42));
-    printf("| len %d\n", ft_printf("{%f}{%F}", 1.42, 1.42));
+//    printf("| len %2$d\n", printf("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901%n", &n), n);
+//    printf("| len %2$d\n", ft_printf("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901%n", &n), n);
 #ifdef CHAR
     TITLE("Char options:\n");
     {
