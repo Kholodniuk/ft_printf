@@ -48,13 +48,13 @@ void    str_cpy(t_e *e, char **fmt)
 
     if (ft_strchr(*fmt, '%') != NULL)
     {
-        /*if (ft_strchr(*fmt, '{') != NULL)
+        if (ft_strchr(*fmt, '{') != NULL)
         {
             len = (int)(ft_strchr(*fmt, '{') - *fmt);
             e->bits_count += write(1, ft_strsub(*fmt, 0, (size_t)len), (size_t)len);
             (*fmt) += len;
         }
-        else */if (ft_strchr(*fmt, '%') != NULL)
+        else if (ft_strchr(*fmt, '%') != NULL)
         {
             len = (int)(ft_strchr(*fmt, '%') - *fmt);
             e->bits_count += write(1, ft_strsub(*fmt, 0, (size_t)len), (size_t)len);

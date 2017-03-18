@@ -39,7 +39,7 @@ void    init_char_di(t_di *di, intmax_t nb, t_e *e)
     di->space = ft_strnew((size_t)sz_space);
     while (--sz_space > -1)
         di->space[sz_space] = ' ';
-    di->sign = ft_strnew((size_t)di->size_sign);
+    di->sign = ft_strnew(1);
     if (di->size_sign && nb < 0)
         di->sign[0] = '-';
     else if (di->size_sign && e->f->plus)
