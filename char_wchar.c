@@ -21,6 +21,8 @@ t_s *c_init(t_e *e)
     s->size_space = 0;
     if (e->width > 0)
         s->size_space = (e->width - 1);
+    if (e->f->space && e->width > 0)
+        s->size_space += 1;
     sz_space = s->size_space;
     s->space = ft_strnew((size_t)sz_space);
     while (--sz_space > -1)
@@ -36,6 +38,7 @@ t_s *c_init(t_e *e)
 void    free_c(t_s *s)
 {
     free(s->space);
+    s->space = NULL;
     free(s);
 }
 
@@ -44,20 +47,15 @@ void    get_char(int c, t_e *e)
     t_s *s;
 
     s = c_init(e);
-    if (e->f->minus && c)
+    if (e->f->minus)
     {
-        e->buf = ft_charjoin(e->buf, (char)c);
-        e->buf = ft_strjoin(e->buf, s->space);
+        e->bits_count += write(e->fd, &c, 1);
+        e->bits_count += write(e->fd, s->space, ft_strlen(s->space));
     }
-    else if (c)
+    else
     {
-        e->buf = ft_strjoin(e->buf, s->space);
-        e->buf = ft_charjoin(e->buf, (char)c);
-    }
-    else if (!c)
-    {
-        write(1, &c, 1);
-        g_zero++;
+        e->bits_count += write(e->fd, s->space, ft_strlen(s->space));
+        e->bits_count += write(e->fd, &c, 1);
     }
     free_c(s);
 }

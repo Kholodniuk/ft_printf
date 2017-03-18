@@ -12,23 +12,18 @@
 
 #include "ft_printf.h"
 
-char    *ft_charjoin(char *s1, char c)
-{
-    size_t	ls1;
-    size_t	i;
-    char	*strnew;
 
-    strnew = NULL;
-    if (s1 && c)
-    {
-        i = -1;
-        ls1 = ft_strlen(s1);
-        if (!(strnew = ft_strnew(ls1 + 1)))
-            return (NULL);
-        while (s1[++i])
-            strnew[i] = s1[i];
-        strnew[i] = c;
-        return (strnew);
-    }
-    return (strnew);
+char	*ft_strdup(const char *src)
+{
+    int		lng;
+    char	*copy;
+
+    lng = 0;
+    while (src[lng])
+        lng++;
+    copy = (char *)malloc(sizeof(char) * (lng + 1));
+    if (!copy)
+        return (0);
+    ft_strcpy(copy, src);
+    return (copy);
 }

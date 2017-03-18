@@ -34,22 +34,22 @@ int     wchar_len(wchar_t *wstr)
     return (len);
 }
 
-char    *get_wchar_cpy(char *str, int wchar, int j)
+char    *get_wchar_cpy(char *str, int wchar, int j, int n)
 {
-    if (wchar <= 0x7F)
+    if (wchar <= 0x7F && n >= 1)
         str[j] = (char)wchar;
-    else if (wchar <= 0x7FF)
+    else if (wchar <= 0x7FF && n >= 2)
     {
         str[j] = (char)((wchar >> 6) + 0xC0);
         str[j + 1] = (char)((wchar & 0x3F) + 0x80);
     }
-    else if (wchar <= 0xFFFF)
+    else if (wchar <= 0xFFFF && n >= 3)
     {
         str[j] = (char)((wchar >> 12) + 0xE0);
         str[j + 1] = (char)(((wchar >> 6) & 0x3F) + 0x80);
         str[j + 2] = (char)((wchar & 0x3F) + 0x80);
     }
-    else if (wchar <= 0x10FFFF)
+    else if (wchar <= 0x10FFFF && n >= 4)
     {
         str[j] = (char)((wchar >> 18) + 0xF0);
         str[j + 1] = (char)(((wchar >> 12) & 0x3F) + 0x80);
@@ -64,21 +64,35 @@ char    *wstrncpy(char *str, wchar_t *wstr, int n)
 {
     int     i;
     int     j;
+    int     tmp;
 
     i = 0;
     j = 0;
-    while (wstr[i] && j < n)
+    while (str && wstr[i])
     {
-        str = get_wchar_cpy(str, wstr[i], j);
+        str = get_wchar_cpy(str, wstr[i], j, n);
         if (wstr[i] <= 0x7F)
+        {
             j += 1;
+            tmp = 1;
+        }
         else if (wstr[i] <= 0x7FF)
+        {
             j += 2;
+            tmp = 2;
+        }
         else if (wstr[i] <= 0xFFFF)
+        {
             j += 3;
+            tmp = 3;
+        }
         else if (wstr[i] <= 0x10FFFF)
+        {
             j += 4;
+            tmp = 4;
+        }
         i++;
+        n -= tmp;
     }
     return (str);
 }
@@ -96,7 +110,7 @@ t_s *wstr_init(wchar_t *wstr, t_e *e)
     s->str = ft_strnew((size_t)s->size_str);
     s->str = wstrncpy(s->str, wstr, s->size_str);
     if (e->width > s->size_str)
-        s->size_space = (e->width - s->size_str);
+        s->size_space = (e->width - (int)ft_strlen(s->str));
     sz_space = s->size_space;
     s->space = ft_strnew((size_t)sz_space);
     while (--sz_space > -1)
@@ -112,7 +126,9 @@ t_s *wstr_init(wchar_t *wstr, t_e *e)
 void    free_wstr(t_s *s)
 {
     free(s->str);
+    s->str = NULL;
     free(s->space);
+    s->space = NULL;
     free(s);
 }
 
@@ -120,16 +136,21 @@ void    get_wstr(wchar_t *wstr, t_e *e)
 {
     t_s *s;
 
+    if (wstr == NULL)
+    {
+        get_str("(null)", e);
+        return ;
+    }
     s = wstr_init(wstr, e);
     if (e->f->minus)
     {
-        e->buf = ft_strjoin(e->buf, s->str);
-        e->buf = ft_strjoin(e->buf, s->space);
+        e->bits_count += write(e->fd, s->str, ft_strlen(s->str));
+        e->bits_count += write(e->fd, s->space, ft_strlen(s->space));
     }
     else
     {
-        e->buf = ft_strjoin(e->buf, s->space);
-        e->buf = ft_strjoin(e->buf, s->str);
+        e->bits_count += write(e->fd, s->space, ft_strlen(s->space));
+        e->bits_count += write(e->fd, s->str, ft_strlen(s->str));
     }
     free_wstr(s);
 }

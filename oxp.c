@@ -54,14 +54,12 @@ t_oxp    *init_oxp(uintmax_t nb, t_e *e)
 
     oxp = malloc(sizeof(t_oxp));
     if (e->spec == 'o' || e->spec == 'O')
-        oxp->nbr = (e->precision == 0 && !nb) ? ft_strnew(0) : u_itoa_base(nb, 8);
+        oxp->nbr = (!nb && (e->f->hash || e->precision == 0)) ? ft_strnew(0) : u_itoa_base(nb, 8);
     else
         oxp->nbr = (e->precision != -1 && !nb) ? ft_strnew(0) : u_itoa_base(nb, 16);
     oxp->size_nbr = (int)ft_strlen(oxp->nbr);
     oxp->size_space = 0;
     oxp->size_prefix = 0;
-//    if (nb == 0 && (e->spec == 'o' || e->spec == 'O'))
-//        oxp->size_nbr = 0;
     if (P_N_X >= 0 && nb && (e->precision < e->width))
         oxp->size_space = 1;
     if (e->spec == 'p' || ((e->spec == 'x' || e->spec == 'X') && e->f->hash && nb != 0))
@@ -70,7 +68,7 @@ t_oxp    *init_oxp(uintmax_t nb, t_e *e)
         oxp->size_prefix = 1;
     oxp->size_zero = 0;
     if (e->precision > e->width || e->precision > oxp->size_nbr)
-        oxp->size_zero = (P_N_X < 0 ? 0 : P_N_X);
+        oxp->size_zero = (P_N_X < 0 ? 0 : P_N_X - (e->spec == 'o' || e->spec == 'O' ? oxp->size_prefix : 0));
     else if ((e->precision < e->width) && e->f->zero && !e->f->minus)
         oxp->size_zero = (W_N_X < 0 ? 0 : W_N_X - oxp->size_prefix);
     if ((e->precision < e->width) && (oxp->size_nbr < e->width) && (!e->f->zero || e->f->minus))
@@ -81,11 +79,19 @@ t_oxp    *init_oxp(uintmax_t nb, t_e *e)
     return (oxp);
 }
 
+void    ft_strdel(char **str)
+{
+    if (*str)
+        free(*str);
+    *str = NULL;
+}
+
 void    free_oxp(t_oxp *oxp)
 {
-    free(oxp->space);
-    free(oxp->zero);
-    free(oxp->nbr);
+    ft_strdel(&oxp->prefix);
+    ft_strdel(&oxp->space);
+    ft_strdel(&oxp->zero);
+    ft_strdel(&oxp->nbr);
     free(oxp);
 }
 
@@ -97,17 +103,17 @@ void    get_oxp(uintmax_t nb, t_e *e)
     oxp = init_oxp(nb, e);
     if (e->f->minus == 1)
     {
-        e->buf = ft_strjoin(e->buf, oxp->prefix);
-        e->buf = ft_strjoin(e->buf, oxp->zero);
-        e->buf = ft_strjoin(e->buf, oxp->nbr);
-        e->buf = ft_strjoin(e->buf, oxp->space);
+        e->bits_count += write(e->fd, oxp->prefix, ft_strlen(oxp->prefix));
+        e->bits_count += write(e->fd, oxp->zero, ft_strlen(oxp->zero));
+        e->bits_count += write(e->fd, oxp->nbr, ft_strlen(oxp->nbr));
+        e->bits_count += write(e->fd, oxp->space, ft_strlen(oxp->space));
     }
     else
     {
-        e->buf = ft_strjoin(e->buf, oxp->space);
-        e->buf = ft_strjoin(e->buf, oxp->prefix);
-        e->buf = ft_strjoin(e->buf, oxp->zero);
-        e->buf = ft_strjoin(e->buf, oxp->nbr);
+        e->bits_count += write(e->fd, oxp->space, ft_strlen(oxp->space));
+        e->bits_count += write(e->fd, oxp->prefix, ft_strlen(oxp->prefix));
+        e->bits_count += write(e->fd, oxp->zero, ft_strlen(oxp->zero));
+        e->bits_count += write(e->fd, oxp->nbr, ft_strlen(oxp->nbr));
     }
     free_oxp(oxp);
 }

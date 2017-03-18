@@ -40,8 +40,7 @@ t_s *str_init(char *arg, t_e *e)
 
 void    free_str(t_s *s)
 {
-    free(s->str);
-    s->str = NULL;
+    ft_strdel(&s->str);
     free(s->space);
     s->str = NULL;
     free(s);
@@ -54,13 +53,13 @@ void    get_str(char *arg, t_e *e)
     s = str_init(arg, e);
     if (arg && e->f->minus)
     {
-        e->buf = ft_strjoin(e->buf, s->str);
-        e->buf = ft_strjoin(e->buf, s->space);
+        e->bits_count += write(e->fd, s->str, ft_strlen(s->str));
+        e->bits_count += write(e->fd, s->space, ft_strlen(s->space));
     }
     else
     {
-        e->buf = ft_strjoin(e->buf, s->space);
-        e->buf = ft_strjoin(e->buf, s->str);
+        e->bits_count += write(e->fd, s->space, ft_strlen(s->space));
+        e->bits_count += write(e->fd, s->str, ft_strlen(s->str));
     }
     free_str(s);
 }

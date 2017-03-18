@@ -32,7 +32,7 @@ void    init_char_di(t_di *di, intmax_t nb, t_e *e)
 
     sz_space = di->size_space;
     sz_zero = di->size_zero;
-    di->nbr = (e->precision != -1 && !nb ? ft_strnew(0) : u_itoa_base((uintmax_t)MOD(nb), 10));
+    di->nbr = (e->precision == 0 && !nb ? ft_strnew(0) : u_itoa_base((uintmax_t)MOD(nb), 10));
     di->zero = ft_strnew((size_t)sz_zero);
     while (--sz_zero > -1)
         di->zero[sz_zero] = '0';
@@ -59,17 +59,14 @@ t_di    *init_di(intmax_t nb, t_e *e)
     di->size_zero = 0;
     if (nb < 0 || e->f->plus || e->f->space)
         di->size_sign = 1;
-    if (nb == 0)
+    if (nb == 0 && e->precision == 0)
         di->size_nbr = 0;
-    /*if (e->precision > e->width)
-        di->size_zero = (P_N < 0 ? 0 : P_N);
-    else */if (e->precision == -1 && e->f->zero && !e->f->minus)
-        di->size_zero = (W_N < 0 ? 0 : W_N - di->size_sign);
-    else if (e->precision > di->size_nbr)
-        di->size_zero = (P_N < 0 ? 0 : P_N);
-//    if (!(e->precision > e->width) && (nb < 0 || e->f->plus))
-//        di->size_zero -= 1;
-//    if (/*((e->precision + di->size_sign) < e->width) && (di->size_nbr < e->width) && */e->precision > -1 && !e->f->zero && e->f->minus)
+    if (e->precision > di->size_nbr)
+    {
+        di->size_zero = e->precision - di->size_nbr;
+    }
+    else if (e->precision <= di->size_nbr && e->f->zero && !e->f->minus)
+        di->size_zero = e->width - di->size_nbr - di->size_sign;
     di->size_space = (e->width - (e->precision > di->size_nbr ? e->precision : (di->size_nbr + di->size_zero)) - di->size_sign);
     init_char_di(di, nb, e);
     return (di);
@@ -78,9 +75,13 @@ t_di    *init_di(intmax_t nb, t_e *e)
 void    free_di(t_di *di)
 {
     free(di->space);
+    di->space = NULL;
     free(di->sign);
+    di->sign = NULL;
     free(di->zero);
+    di->zero = NULL;
     free(di->nbr);
+    di->nbr = NULL;
     free(di);
 }
 
@@ -91,17 +92,17 @@ void    get_nbr(intmax_t nb, t_e *e)
     di = init_di(nb, e);
     if (e->f->minus == 1)
     {
-        e->buf = ft_strjoin(e->buf, di->sign);
-        e->buf = ft_strjoin(e->buf, di->zero);
-        e->buf = ft_strjoin(e->buf, di->nbr);
-        e->buf = ft_strjoin(e->buf, di->space);
+        e->bits_count += write(e->fd, di->sign, ft_strlen(di->sign));
+        e->bits_count += write(e->fd, di->zero, ft_strlen(di->zero));
+        e->bits_count += write(e->fd, di->nbr, ft_strlen(di->nbr));
+        e->bits_count += write(e->fd, di->space, ft_strlen(di->space));
     }
     else
     {
-        e->buf = ft_strjoin(e->buf, di->space);
-        e->buf = ft_strjoin(e->buf, di->sign);
-        e->buf = ft_strjoin(e->buf, di->zero);
-        e->buf = ft_strjoin(e->buf, di->nbr);
+        e->bits_count += write(e->fd, di->space, ft_strlen(di->space));
+        e->bits_count += write(e->fd, di->sign, ft_strlen(di->sign));
+        e->bits_count += write(e->fd, di->zero, ft_strlen(di->zero));
+        e->bits_count += write(e->fd, di->nbr, ft_strlen(di->nbr));
     }
     free_di(di);
 }

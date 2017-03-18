@@ -66,6 +66,36 @@ void    select_oxp(t_e *e, va_list ar)
         get_oxp(va_arg(ar, uintmax_t), e);
 }
 
+void    select_efga(t_e *e, va_list ar)
+{
+    if (e->mod != 7 && (e->spec == 'f' || e->spec == 'F'))
+        get_f(va_arg(ar, double), e);
+    else if ((e->mod == 7 && e->spec == 'f') || e->spec == 'F')
+        get_f(va_arg(ar, long double), e);
+//    else if (e->mod != 7 && (e->spec == 'e' || e->spec == 'E'))
+//        get_feg(va_arg(ar, double), e);
+//    else if (e->mod == 7 && (e->spec == 'e' || e->spec == 'E'))
+//        get_feg(va_arg(ar, long double), e);
+//    else if (e->mod != 7 && (e->spec == 'g' || e->spec == 'G'))
+//        get_feg(va_arg(ar, double), e);
+//    else if (e->mod == 7 && (e->spec == 'g' || e->spec == 'G'))
+//        get_feg(va_arg(ar, long double), e);
+//    else if (e->mod != 7 && (e->spec == 'a' || e->spec == 'A'))
+//        get_a(va_arg(ar, double), e);
+//    else if (e->mod == 7 && (e->spec == 'a' || e->spec == 'A'))
+//        get_a(va_arg(ar, long double), e);
+}
+
+void    select_bonus(t_e *e, va_list ar)
+{
+    if (e->spec == 'b')
+        get_noprint(va_arg(ar, char *), e);
+    else if (e->spec == 'k')
+        get_iso_data(va_arg(ar, long), e);
+    else if (e->spec == 'r')
+        get_binary(va_arg(ar, int), e);
+}
+
 void    make_fprintf(t_e *e, va_list ar)
 {
     if (e->spec == 's' && e->mod != 3)
@@ -81,6 +111,13 @@ void    make_fprintf(t_e *e, va_list ar)
         select_oxp(e, ar);
     else if (e->spec == 'S' || e->spec == 's')
         get_wstr(va_arg(ar, wchar_t*), e);
+    else if (e->spec == 'n')
+        get_n(va_arg(ar, int*), e);
+    else if (/*e->spec == 'e' || e->spec == 'E' || */e->spec == 'f' || e->spec == 'F'
+            /*|| e->spec == 'g' || e->spec == 'G' || e->spec == 'a' || e->spec == 'A'*/)
+        select_efga(e, ar);
+    else if (e->spec == 'b' || e->spec == 'k' || e->spec == 'r')
+        select_bonus(e, ar);
     else
         apply_width(e);
 }

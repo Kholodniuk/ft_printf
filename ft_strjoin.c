@@ -6,7 +6,7 @@
 /*   By: skholodn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/01 20:50:21 by skholodn          #+#    #+#             */
-/*   Updated: 2017/03/13 16:13:01 by skholodn         ###   ########.fr       */
+/*   Updated: 2016/12/01 21:37:23 by skholodn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	j;
 	char	*strnew;
 
-//	if (s1 && s2)
-//	{
+	if (s1)
+	{
 		i = -1;
 		ls1 = ft_strlen(s1);
 		ls2 = ft_strlen(s2);
 		strnew = ft_strnew(ls1 + ls2);
 		if (!strnew)
 			return (NULL);
-		while (s1[++i])
+		while (s1[++i] && ls1 + ls2)
 			strnew[i] = s1[i];
 		j = 0;
-		while (s2 && s2[j])
+		while (s2 && s2[j] && ls1 + ls2)
 			strnew[i++] = s2[j++];
 		return (strnew);
-	//}
+	}
 	return (NULL);
 }

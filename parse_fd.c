@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   parse_fd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skholodn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/28 15:28:05 by skholodn          #+#    #+#             */
-/*   Updated: 2016/12/06 17:08:58 by skholodn         ###   ########.fr       */
+/*   Created: 2017/03/16 14:05:51 by skholodn          #+#    #+#             */
+/*   Updated: 2017/03/16 14:06:36 by skholodn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "ft_printf.h"
 
-int		ft_atoi(const char *s)
+int     parse_fd(t_e *e, char *fmt, va_list ar)
 {
-	int		res;
-	int		sign;
-	int		i;
+    if (ft_strstr_stop(fmt, "{fd}"))
+    {
+        e->fd = va_arg(ar, int);
+        return (1);
+    }
+    return (0);
+}
 
-	res = 0;
-	sign = 1;
-	i = 0;
-	while ((s[i] > 8 && s[i] < 14) || s[i] == 32)
-		i++;
-	if (s[i] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-	else if (s[i] == '+')
-		i++;
-	while (s[i] >= '0' && s[i] <= '9')
-	{
-		res = res * 10 + s[i] - '0';
-		i++;
-	}
-	return (sign * res);
+void    find_fd(t_e *e, char **fmt, va_list ar)
+{
+    if (!parse_fd(e, *fmt, ar))
+    {
+        write(1, "{", 1);
+        (*fmt)++;
+    }
+    else
+        *fmt = ft_strchr(*fmt, '}') + 1;
 }

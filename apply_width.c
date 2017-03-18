@@ -36,6 +36,7 @@ t_s *str_c_init(t_e *e)
 void    free_str_c(t_s *s)
 {
     free(s->space);
+    s->space = NULL;
     free(s);
 }
 
@@ -46,13 +47,13 @@ void    apply_width(t_e *e)
     s = str_c_init(e);
     if (e->f->minus)
     {
-        e->buf = ft_charjoin(e->buf, e->spec);
-        e->buf = ft_strjoin(e->buf, s->space);
+        e->bits_count += write(e->fd, &e->spec, 1);
+        e->bits_count += write(e->fd, s->space, ft_strlen(s->space));
     }
     else
     {
-        e->buf = ft_strjoin(e->buf, s->space);
-        e->buf = ft_charjoin(e->buf, e->spec);
+        e->bits_count += write(e->fd, s->space, ft_strlen(s->space));
+        e->bits_count += write(e->fd, &e->spec, 1);
     }
     free_str_c(s);
 }

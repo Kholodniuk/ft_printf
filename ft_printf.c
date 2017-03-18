@@ -12,13 +12,6 @@
 
 #include "ft_printf.h"
 
-int	ft_putstr(char const *s)
-{
-    if (s)
-        return ((int)write(1, s, ft_strlen(s)));
-    return (0);
-}
-
 t_fl	*init_flags(void)
 {
 	t_fl	*flag;
@@ -29,21 +22,23 @@ t_fl	*init_flags(void)
 	flag->hash = 0;
 	flag->space = 0;
 	flag->zero = 0;
+   flag->apostrophe = 0;
 	return (flag);
 }
 
-t_e	*env_init(char *buff)
+t_e	*env_init(int bits)
 {
 	t_e	*env;
 	env = (t_e *)malloc(sizeof(t_e));
-   env->buf = NULL;
-   env->buf = buff;
+   env->bits_count = bits;
 	env->mod = 0;
 	env->width = 0;
 	env->precision = -1;
 	env->dollar = 0;
 	env->spec = 0;
 	env->f = init_flags();
+   env->dollar = 0;
+   env->fd = 1;
 	return (env);
 }
 
@@ -53,49 +48,70 @@ void    str_cpy(t_e *e, char **fmt)
 
     if (ft_strchr(*fmt, '%') != NULL)
     {
-        len = (int)(ft_strchr(*fmt, '%') - *fmt);
-        e->buf = ft_strjoin(e->buf, ft_strsub(*fmt, 0, (size_t)len));
-        (*fmt) += len;
+        if (ft_strchr(*fmt, '{') != NULL)
+        {
+            len = (int)(ft_strchr(*fmt, '{') - *fmt);
+            e->bits_count += write(1, ft_strsub(*fmt, 0, (size_t)len), (size_t)len);
+            (*fmt) += len;
+        }
+        else if (ft_strchr(*fmt, '%') != NULL)
+        {
+            len = (int)(ft_strchr(*fmt, '%') - *fmt);
+            e->bits_count += write(1, ft_strsub(*fmt, 0, (size_t)len), (size_t)len);
+            (*fmt) += len;
+        }
     }
+    else if (ft_strchr(*fmt, '{') != NULL)
+        {
+            len = (int)(ft_strchr(*fmt, '{') - *fmt);
+            e->bits_count += write(1, ft_strsub(*fmt, 0, (size_t)len), (size_t)len);
+            (*fmt) += len;
+        }
     else
     {
-        len = (int)ft_strlen(*fmt);
-        e->buf = ft_strjoin(e->buf, *fmt);
-        (*fmt) += len;
+       len = (int)ft_strlen(*fmt);
+       e->bits_count += write(1, *fmt, (size_t)len);
+       (*fmt) += len;
     }
 }
 
-char    *ft_vsprintf(char *buf, char *fmt, va_list ar)
+int     ft_vsprintf(int bits_count, char *fmt, va_list ar)
 {
 	t_e	*e;
+	int      bits;
+    va_list tmp;
 
-   e = env_init(buf);
+   va_copy(tmp, ar);
+   e = env_init(bits_count);
    while (*fmt != '\0')
    {
 		if (*fmt == '%')
-			parse_persent(e, &fmt, ar);
-		else
-		{
-        str_cpy(e, &fmt);
-		}
-    }
-   return (e->buf);
+      {
+          parse_persent(e, &fmt, ar, tmp);
+          if (e->spec == '\0')
+              return (0);
+      }
+      else if ('{' == *fmt)
+          find_color(e, &fmt, ar);
+      else
+         str_cpy(e, &fmt);
+   }
+   bits = e->bits_count;
+   free(e->f);
+   free(e);
+   return (bits);
 }
 
 int ft_printf(char *fmt, ...)
 {
 	va_list ar;
 	int 	bits_count;
-	char *buf;
 
-   g_zero = 0;
-   if (fmt == NULL)
+   bits_count = 0;
+    if (fmt == NULL)
 		return (-1);
-	buf = ft_strnew(0);
 	va_start(ar, fmt);
-	buf = ft_vsprintf(buf, fmt, ar);
+	bits_count = ft_vsprintf(bits_count, fmt, ar);
 	va_end(ar);
-	bits_count = ft_putstr(buf) + g_zero;
-   free(buf);
 	return (bits_count);
 }

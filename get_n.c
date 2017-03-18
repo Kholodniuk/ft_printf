@@ -1,39 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   get_n.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skholodn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/28 15:28:05 by skholodn          #+#    #+#             */
-/*   Updated: 2016/12/06 17:08:58 by skholodn         ###   ########.fr       */
+/*   Created: 2017/03/16 00:14:00 by skholodn          #+#    #+#             */
+/*   Updated: 2017/03/16 00:17:03 by skholodn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "ft_printf.h"
 
-int		ft_atoi(const char *s)
+void	get_n(int	*n, t_e *e)
 {
-	int		res;
-	int		sign;
-	int		i;
-
-	res = 0;
-	sign = 1;
-	i = 0;
-	while ((s[i] > 8 && s[i] < 14) || s[i] == 32)
-		i++;
-	if (s[i] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-	else if (s[i] == '+')
-		i++;
-	while (s[i] >= '0' && s[i] <= '9')
-	{
-		res = res * 10 + s[i] - '0';
-		i++;
-	}
-	return (sign * res);
+	*n = e->bits_count;
 }

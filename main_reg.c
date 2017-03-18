@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   main_reg.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: skholodn <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/28 15:28:05 by skholodn          #+#    #+#             */
-/*   Updated: 2016/12/06 17:08:58 by skholodn         ###   ########.fr       */
+/*   Created: 2017/03/13 19:25:09 by skholodn          #+#    #+#             */
+/*   Updated: 2017/03/15 23:58:05 by skholodn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "ft_printf.h"
 
-int		ft_atoi(const char *s)
+#include <stdio.h>
+#include <stddef.h>
+#include <locale.h>
+#include <limits.h>
+#include <errno.h>
+#include <unistd.h>
+
+int		main(void)
 {
-	int		res;
-	int		sign;
-	int		i;
-
-	res = 0;
-	sign = 1;
-	i = 0;
-	while ((s[i] > 8 && s[i] < 14) || s[i] == 32)
-		i++;
-	if (s[i] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-	else if (s[i] == '+')
-		i++;
-	while (s[i] >= '0' && s[i] <= '9')
-	{
-		res = res * 10 + s[i] - '0';
-		i++;
-	}
-	return (sign * res);
+	//	   printf("%3$daaa%djjj %1$d\n", 1, 2, 3, 4, 5);
+	//	ft_printf("%3$daaa%djjj %1$d\n", 1, 2, 3, 4, 5);
+	write(-1, "FUCK\n", 5);
+	return (0);
 }
