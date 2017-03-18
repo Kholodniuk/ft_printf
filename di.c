@@ -59,7 +59,7 @@ t_di    *init_di(intmax_t nb, t_e *e)
     di->size_zero = 0;
     if (nb < 0 || e->f->plus || e->f->space)
         di->size_sign = 1;
-    if (nb == 0 && e->precision == 0)
+    else if (nb == 0 && e->precision == 0)
         di->size_nbr = 0;
     if (e->precision > di->size_nbr)
     {
