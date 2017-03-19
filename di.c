@@ -57,7 +57,7 @@ t_di    *init_di(intmax_t nb, t_e *e)
     di->size_sign = 0;
     di->size_space = 0;
     di->size_zero = 0;
-    if (nb < 0 || e->f->plus || e->f->space)
+    if ((nb < 0 || e->f->plus || e->f->space))
         di->size_sign = 1;
     else if (nb == 0 && e->precision == 0)
         di->size_nbr = 0;
@@ -94,7 +94,7 @@ void    get_nbr(intmax_t nb, t_e *e)
     {
         e->bits_count += write(e->fd, di->sign, ft_strlen(di->sign));
         e->bits_count += write(e->fd, di->zero, ft_strlen(di->zero));
-        e->bits_count += write(e->fd, di->nbr, ft_strlen(di->nbr));
+        e->bits_count += write(e->fd, di->nbr,  ft_strlen(di->nbr));
         e->bits_count += write(e->fd, di->space, ft_strlen(di->space));
     }
     else

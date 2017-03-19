@@ -70,7 +70,7 @@ void    select_efga(t_e *e, va_list ar)
 {
     if (e->mod != 7 && (e->spec == 'f' || e->spec == 'F'))
         get_f(va_arg(ar, double), e);
-    else if ((e->mod == 7 && e->spec == 'f') || e->spec == 'F')
+    else if (e->mod == 7 && (e->spec == 'f' || e->spec == 'F'))
         get_f(va_arg(ar, long double), e);
 //    else if (e->mod != 7 && (e->spec == 'e' || e->spec == 'E'))
 //        get_feg(va_arg(ar, double), e);

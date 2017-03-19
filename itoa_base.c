@@ -27,7 +27,7 @@ char            *u_itoa_base(uintmax_t value, uintmax_t base)
     char    *str;
     int     i;
 
-    if (base < 2 || base > 16 || !(str = (char*)malloc(sizeof(char) * 60)))
+    if (base < 2 || base > 16 || !(str = ft_strnew(60)))
         return (0);
     i = 0;
     u_make_str(value, base, str, &i);
