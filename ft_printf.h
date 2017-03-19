@@ -217,10 +217,7 @@ char    *ft_strnew(size_t size);
 int     ft_atoi(const char *s);
 int     ft_tolower(int c);
 char    *ft_strncpy(char *dest, const char *src, size_t len);
-char	*ft_strcpy(const char *dest, const char *src);
-char	*ft_strjoin(char const *s1, char const *s2);
-
-char    *ft_strsub(char const *s, unsigned int start, size_t len);
+char    *ft_strcpy(const char *dest, const char *src);
 char    *ft_strchr(const char *s, int c);
 void    ft_strdel(char **str);
 char    *ft_strdup(const char *src);

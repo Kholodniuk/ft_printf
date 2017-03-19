@@ -41,7 +41,8 @@ t_u    *init_u(uintmax_t nb, t_e *e)
     else if ((e->precision < e->width) && e->f->zero)
         u->size_zero = (W_N_U < 0 ? 0 : W_N_U);
     if ((e->precision < e->width) && (u->size_nbr < e->width) && !e->f->zero)
-        u->size_space = (e->width - (e->precision > u->size_nbr ? e->precision : (u->size_nbr + u->size_zero)));
+        u->size_space = (e->width - (e->precision > u->size_nbr ? e->precision
+                           : (u->size_nbr + u->size_zero)));
     init_char_u(e, u, nb);
     return (u);
 }

@@ -72,18 +72,6 @@ void    select_efga(t_e *e, va_list ar)
         get_f(va_arg(ar, double), e);
     else if (e->mod == 7 && (e->spec == 'f' || e->spec == 'F'))
         get_f(va_arg(ar, long double), e);
-//    else if (e->mod != 7 && (e->spec == 'e' || e->spec == 'E'))
-//        get_feg(va_arg(ar, double), e);
-//    else if (e->mod == 7 && (e->spec == 'e' || e->spec == 'E'))
-//        get_feg(va_arg(ar, long double), e);
-//    else if (e->mod != 7 && (e->spec == 'g' || e->spec == 'G'))
-//        get_feg(va_arg(ar, double), e);
-//    else if (e->mod == 7 && (e->spec == 'g' || e->spec == 'G'))
-//        get_feg(va_arg(ar, long double), e);
-//    else if (e->mod != 7 && (e->spec == 'a' || e->spec == 'A'))
-//        get_a(va_arg(ar, double), e);
-//    else if (e->mod == 7 && (e->spec == 'a' || e->spec == 'A'))
-//        get_a(va_arg(ar, long double), e);
 }
 
 void    select_bonus(t_e *e, va_list ar)
@@ -106,15 +94,14 @@ void    make_fprintf(t_e *e, va_list ar)
         select_di(e, ar);
     else if (e->spec == 'u' || e->spec == 'U')
         select_u(e, ar);
-    else if (e->spec == 'o' || e->spec == 'x' || e->spec == 'O' || e->spec == 'X'
-            || e->spec == 'p')
+    else if (e->spec == 'o' || e->spec == 'x' || e->spec == 'O' ||
+            e->spec == 'X' || e->spec == 'p')
         select_oxp(e, ar);
     else if (e->spec == 'S' || e->spec == 's')
         get_wstr(va_arg(ar, wchar_t*), e);
     else if (e->spec == 'n')
         get_n(va_arg(ar, int*), e);
-    else if (/*e->spec == 'e' || e->spec == 'E' || */e->spec == 'f' || e->spec == 'F'
-            /*|| e->spec == 'g' || e->spec == 'G' || e->spec == 'a' || e->spec == 'A'*/)
+    else if (e->spec == 'f' || e->spec == 'F')
         select_efga(e, ar);
     else if (e->spec == 'b' || e->spec == 'k' || e->spec == 'r')
         select_bonus(e, ar);

@@ -28,6 +28,30 @@ int		ft_strstr_stop(const char *str, const char *to_find)
     }
     return (1);
 }
+int     parse_color_inside(t_e *e, char *fmt)
+{
+    if (ft_strstr_stop(fmt, DARK_GRAY_COLOR))
+        return ((int) write(e->fd, DARK_GRAY, ft_strlen(DARK_GRAY)));
+    else if (ft_strstr_stop(fmt, LIGHT_RED_COLOR))
+        return ((int) write(e->fd, LIGHT_RED, ft_strlen(LIGHT_RED)));
+    else if (ft_strstr_stop(fmt, LIGHT_GREEN_COLOR))
+        return ((int) write(e->fd, LIGHT_GREEN, ft_strlen(LIGHT_GREEN)));
+    else if (ft_strstr_stop(fmt, LIGHT_YELLOW_COLOR))
+        return ((int) write(e->fd, LIGHT_YELLOW, ft_strlen(LIGHT_YELLOW)));
+    else if (ft_strstr_stop(fmt, LIGHT_BLUE_COLOR))
+        return ((int) write(e->fd, LIGHT_BLUE, ft_strlen(LIGHT_BLUE)));
+    else if (ft_strstr_stop(fmt, LIGHT_MAGENTA_COLOR))
+        return ((int) write(e->fd, LIGHT_MAGENTA, ft_strlen(LIGHT_MAGENTA)));
+    else if (ft_strstr_stop(fmt, LIGHT_CYAN_COLOR))
+        return ((int) write(e->fd, LIGHT_CYAN, ft_strlen(LIGHT_CYAN)));
+    else if (ft_strstr_stop(fmt, WHITE_COLOR))
+        return ((int)write(e->fd, WHITE, ft_strlen(WHITE)));
+    else if (ft_strstr_stop(fmt, EOC_COLOR))
+        return ((int)write(e->fd, EOC, ft_strlen(EOC)));
+    else if (ft_strstr_stop(fmt, GRAY_COLOR))
+        return ((int)write(e->fd, GRAY, ft_strlen(GRAY)));
+    return (0);
+}
 
 int     parse_color(t_e *e, char *fmt, va_list ar)
 {
@@ -45,26 +69,8 @@ int     parse_color(t_e *e, char *fmt, va_list ar)
         return ((int)write(e->fd, MAGENTA, ft_strlen(MAGENTA)));
     else if (ft_strstr_stop(fmt, CYAN_COLOR))
         return ((int)write(e->fd, CYAN, ft_strlen(CYAN)));
-    else if (ft_strstr_stop(fmt, GRAY_COLOR))
-        return ((int)write(e->fd, GRAY, ft_strlen(GRAY)));
-    else if (ft_strstr_stop(fmt, DARK_GRAY_COLOR))
-        return ((int)write(e->fd, DARK_GRAY, ft_strlen(DARK_GRAY)));
-    else if (ft_strstr_stop(fmt, LIGHT_RED_COLOR))
-        return ((int)write(e->fd, LIGHT_RED, ft_strlen(LIGHT_RED)));
-    else if (ft_strstr_stop(fmt, LIGHT_GREEN_COLOR))
-        return ((int)write(e->fd, LIGHT_GREEN, ft_strlen(LIGHT_GREEN)));
-    else if (ft_strstr_stop(fmt, LIGHT_YELLOW_COLOR))
-        return ((int)write(e->fd, LIGHT_YELLOW, ft_strlen(LIGHT_YELLOW)));
-    else if (ft_strstr_stop(fmt, LIGHT_BLUE_COLOR))
-        return ((int)write(e->fd, LIGHT_BLUE, ft_strlen(LIGHT_BLUE)));
-    else if (ft_strstr_stop(fmt, LIGHT_MAGENTA_COLOR))
-        return ((int)write(e->fd, LIGHT_MAGENTA, ft_strlen(LIGHT_MAGENTA)));
-    else if (ft_strstr_stop(fmt, LIGHT_CYAN_COLOR))
-        return ((int)write(e->fd, LIGHT_CYAN, ft_strlen(LIGHT_CYAN)));
-    else if (ft_strstr_stop(fmt, WHITE_COLOR))
-        return ((int)write(e->fd, WHITE, ft_strlen(WHITE)));
-    else if (ft_strstr_stop(fmt, EOC_COLOR))
-        return ((int)write(e->fd, EOC, ft_strlen(EOC)));
+    else if (parse_color_inside(e, fmt))
+        return (1);
     else if (ft_strstr_stop(fmt, "{fd}"))
     {
         e->fd = va_arg(ar, int);
