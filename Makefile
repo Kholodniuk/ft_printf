@@ -38,7 +38,10 @@ SRCS = ft_printf.c \
 	   get_iso_data.c \
 	   get_binary.c \
 	   parse_fd.c \
-	   lib_printf1.c
+	   lib_printf1.c \
+	   ft_strchr.c \
+	   ft_strcpy.c \
+	   ft_strcat.c
 
 
 OBJ = $(SRCS:.c=.o)
