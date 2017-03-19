@@ -41,7 +41,8 @@ SRCS = ft_printf.c \
 	   lib_printf1.c \
 	   ft_strchr.c \
 	   ft_strcpy.c \
-	   ft_strcat.c
+	   ft_strcat.c \
+	   ft_strncpy.c
 
 
 OBJ = $(SRCS:.c=.o)
