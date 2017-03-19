@@ -44,34 +44,12 @@ t_e	*env_init(int bits)
 
 void    str_cpy(t_e *e, char **fmt)
 {
-    int     len;
-
-    if (ft_strchr(*fmt, '%') != NULL && *(ft_strchr(*fmt, '%')) == '%')
+    while (1)
     {
-        if (ft_strchr(*fmt, '{') != NULL && *(ft_strchr(*fmt, '{')) == '{')
-        {
-            len = (int)(ft_strchr(*fmt, '{') - *fmt);
-            e->bits_count += write(1, ft_strsub(*fmt, 0, (size_t)len), (size_t)len);
-            (*fmt) += len;
-        }
-        else if (ft_strchr(*fmt, '%') != NULL && *(ft_strchr(*fmt, '%')) == '%')
-        {
-            len = (int)(ft_strchr(*fmt, '%') - *fmt);
-            e->bits_count += write(1, ft_strsub(*fmt, 0, (size_t)len), (size_t)len);
-            (*fmt) += len;
-        }
-    }
-    else if (ft_strchr(*fmt, '{') != NULL && *(ft_strchr(*fmt, '{')) == '{')
-        {
-            len = (int)(ft_strchr(*fmt, '{') - *fmt);
-            e->bits_count += write(1, ft_strsub(*fmt, 0, (size_t)len), (size_t)len);
-            (*fmt) += len;
-        }
-    else
-    {
-       len = (int)ft_strlen(*fmt);
-       e->bits_count += write(1, *fmt, (size_t)len);
-       (*fmt) += len;
+        if(**fmt == '%' || **fmt == '{' || **fmt == 0)
+            return ;
+        e->bits_count += write(1, *fmt, 1);
+        (*fmt)++;
     }
 }
 
